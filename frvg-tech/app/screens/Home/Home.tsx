@@ -20,13 +20,13 @@ export const Home = () => {
   const [users, setUsers] = useState<User[]>();
   const [userSearched, setUserSearched] = useState<ItemUser[] | null>(null);
   const favouriteList = useContext(FavouriteContext);
-
   const navigation = useNavigation<NavigationProp<MainNavigatorStackList>>();
 
   const fetchUsers = async () => {
     try {
       const response = await fetch("https://api.github.com/users");
       const data: User[] = await response.json();
+
       setUsers(data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -37,12 +37,18 @@ export const Home = () => {
     fetchUsers();
   }, []);
 
+  const handleOnPressUser = (item) => {
+    navigation.navigate("UserDetails", {
+      user: item,
+    });
+  };
+
   const renderItem = ({ item, index }: { item: any; index: number }) => {
     const isFavourite = favouriteList.favouriteUsers.includes(item.id);
     return (
       <TouchableOpacity
         style={[styles.userButton, index % 2 === 0 && styles.greayButton]}
-        onPress={() => navigation.navigate("UserDetails", { user: item })}
+        onPress={() => handleOnPressUser(item)}
       >
         <Image source={{ uri: item.avatar_url }} style={styles.avatar} />
         <Text style={styles.name}>{item.login}</Text>
@@ -58,7 +64,6 @@ export const Home = () => {
         keyExtractor={(data) => String(data.id)}
         renderItem={renderItem}
         data={userSearched ? userSearched : users}
-        contentContainerStyle={styles.container}
         ListEmptyComponent={<EmptyData text="No users were found" />}
       />
     </SafeAreaView>
