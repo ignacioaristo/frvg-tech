@@ -2,18 +2,18 @@ import React from "react";
 import Svg, { Path } from "react-native-svg";
 
 type Props = {
-  isFavorite: boolean;
+  isFavourite: boolean;
 };
 
-export const Heart: React.FC<Props> = ({ isFavorite = false }) => {
+export const Heart: React.FC<Props> = ({ isFavourite = false }) => {
   return (
     <Svg
       width={50}
       height={50}
       viewBox="0 0 24 24"
-      fill={isFavorite ? "red" : "none"}
-      stroke="currentColor"
-      strokeWidth={2}
+      fill={isFavourite ? "red" : "none"}
+      stroke="red"
+      strokeWidth={1}
       strokeLinecap="round"
       strokeLinejoin="round"
       className="lucide lucide-heart-icon lucide-heart"

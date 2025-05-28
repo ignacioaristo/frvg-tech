@@ -1,15 +1,18 @@
+import { FavouriteContext } from "@/app/index";
 import { MainNavigatorStackList } from "@/app/types/Navigations";
 import { RepoUserData } from "@/app/types/RepoUserData";
+import { useIsFavourite } from "@/app/utils/useIsFavourite";
+
 import { Heart } from "@/assets/images/Heart";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export const UserDetails = () => {
   const route = useRoute<RouteProp<MainNavigatorStackList, "UserDetails">>();
   const user = route.params.user;
   const [userData, setUserData] = useState<RepoUserData>();
-  const [isFavorite, setIsFavorite] = useState(false);
+  const data = useContext(FavouriteContext);
 
   const fetchUserRepoData = async (username: string) => {
     try {
@@ -24,6 +27,19 @@ export const UserDetails = () => {
   useEffect(() => {
     fetchUserRepoData(user.login);
   }, []);
+
+  const { isFavourite } = useIsFavourite(userData?.id || 0);
+
+  const addFavouriteUser = () => {
+    if (userData) {
+      const userId = userData.id;
+      if (!data.favouriteUsers.includes(userId)) {
+        data.setFavouriteUsers((prev) => [...prev, userId]);
+      } else {
+        data.setFavouriteUsers((prev) => prev.filter((id) => id !== userId));
+      }
+    }
+  };
 
   return (
     <View
@@ -41,10 +57,10 @@ export const UserDetails = () => {
         }}
       >
         <TouchableOpacity
-          onPress={() => setIsFavorite((prev) => !prev)}
+          onPress={addFavouriteUser}
           style={{ position: "absolute", top: 30, right: 30 }}
         >
-          <Heart isFavorite={isFavorite} />
+          <Heart isFavourite={isFavourite} />
         </TouchableOpacity>
 
         <Image
