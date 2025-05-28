@@ -1,12 +1,13 @@
-import { FavouriteContext } from "@/app/index";
 import { MainNavigatorStackList } from "@/app/types/Navigations";
 import { RepoUserData } from "@/app/types/RepoUserData";
 import { useIsFavourite } from "@/app/utils/useIsFavourite";
 
+import { FavouriteContext } from "@/app/context/FavouriteContext";
 import { Heart } from "@/assets/images/Heart";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import React, { useContext, useEffect, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import { styles } from "./UserDetails.styles";
 
 export const UserDetails = () => {
   const route = useRoute<RouteProp<MainNavigatorStackList, "UserDetails">>();
@@ -42,55 +43,19 @@ export const UserDetails = () => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-      }}
-    >
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
-        <TouchableOpacity
-          onPress={addFavouriteUser}
-          style={{ position: "absolute", top: 30, right: 30 }}
-        >
+    <View style={styles.container}>
+      <View style={styles.topInformation}>
+        <TouchableOpacity onPress={addFavouriteUser} style={styles.heartIcon}>
           <Heart isFavourite={isFavourite} />
         </TouchableOpacity>
 
-        <Image
-          source={{ uri: userData?.avatar_url }}
-          style={{
-            width: 200,
-            height: 200,
-            borderRadius: 100,
-          }}
-        />
-        <Text
-          style={{
-            textAlign: "center",
-            fontWeight: "bold",
-            fontSize: 20,
-            marginTop: 20,
-          }}
-        >
-          {userData?.name}
-        </Text>
+        <Image source={{ uri: userData?.avatar_url }} style={styles.avatar} />
+        <Text style={styles.name}>{userData?.name}</Text>
       </View>
 
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-        }}
-      >
+      <View style={styles.bottomInformation}>
         {userData?.bio ? (
-          <Text style={{ textAlign: "center" }}>Bio: {userData.bio}</Text>
+          <Text style={styles.textAlignCenter}>Bio: {userData.bio}</Text>
         ) : null}
         <Text>Public Repos: {userData?.public_repos}</Text>
         <Text>Number of followers: {userData?.followers}</Text>

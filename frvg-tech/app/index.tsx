@@ -1,20 +1,12 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { createContext, useState } from "react";
+import { useState } from "react";
+import { FavouriteContext } from "./context/FavouriteContext";
 import { Home } from "./screens/Home/Home";
 import { UserDetails } from "./screens/UserDetails/UserDetails";
 import { MainNavigatorStackList } from "./types/Navigations";
 
 const Stack = createNativeStackNavigator<MainNavigatorStackList>();
-type FavouriteContextType = {
-  favouriteUsers: number[];
-  setFavouriteUsers: React.Dispatch<React.SetStateAction<number[]>>;
-};
-
-export const FavouriteContext = createContext<FavouriteContextType>({
-  favouriteUsers: [],
-  setFavouriteUsers: () => {},
-});
 
 function RootStack() {
   const [favouriteUsers, setFavouriteUsers] = useState<number[]>([]);

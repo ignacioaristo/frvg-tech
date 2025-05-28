@@ -2,14 +2,20 @@ import React from "react";
 import Svg, { Path } from "react-native-svg";
 
 type Props = {
-  isFavourite: boolean;
+  isFavourite?: boolean;
+  width?: number;
+  height?: number;
 };
 
-export const Heart: React.FC<Props> = ({ isFavourite = false }) => {
+export const Heart: React.FC<Props> = ({
+  isFavourite = false,
+  width = 50,
+  height = 50,
+}) => {
   return (
     <Svg
-      width={50}
-      height={50}
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill={isFavourite ? "red" : "none"}
       stroke="red"

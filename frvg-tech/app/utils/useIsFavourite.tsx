@@ -1,5 +1,5 @@
-import { FavouriteContext } from "@/app/index";
 import { useContext } from "react";
+import { FavouriteContext } from "../context/FavouriteContext";
 
 export const useIsFavourite = (userId: number) => {
   const data = useContext(FavouriteContext);
