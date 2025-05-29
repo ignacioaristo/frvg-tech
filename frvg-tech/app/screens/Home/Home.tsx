@@ -1,10 +1,10 @@
 import { EmptyData } from "@/app/components/EmptySearch/EmptyData";
 import { SearchBar } from "@/app/components/SearchBar/SearchBar";
 import { FavouriteContext } from "@/app/context/FavouriteContext";
+import { useFetchUsers } from "@/app/hooks/useFetchUsers";
 import { MainNavigatorStackList } from "@/app/types/Navigations";
 import { ItemUser } from "@/app/types/SearchUser";
 import { Heart } from "@/assets/images/Heart";
-import { USER_MOCK } from "@/mocks/users";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React, { useContext, useState } from "react";
 import {
@@ -25,9 +25,9 @@ export const Home = () => {
   const navigation = useNavigation<NavigationProp<MainNavigatorStackList>>();
   const { width } = useWindowDimensions();
 
-  // const { isLoading, users } = useFetchUsers();
-  const users = USER_MOCK;
-  const isLoading = false;
+  const { isLoading, users } = useFetchUsers();
+  // const users = USER_MOCK;
+  // const isLoading = false;
 
   const handleOnPressUser = (item) => {
     navigation.navigate("UserDetails", {
@@ -62,6 +62,7 @@ export const Home = () => {
         <FlatList
           keyExtractor={(data) => String(data.id)}
           renderItem={renderItem}
+          // data={users}
           data={userSearched ? userSearched : users}
           contentContainerStyle={styles.flatListContainer}
           ListEmptyComponent={<EmptyData text="No users were found" />}

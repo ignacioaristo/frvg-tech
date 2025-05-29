@@ -24,7 +24,12 @@ function RootStack() {
 
   return (
     <FavouriteContext.Provider value={{ favouriteUsers, setFavouriteUsers }}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+        initialRouteName="Home"
+      >
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="UserDetails" component={UserDetails} />
       </Stack.Navigator>

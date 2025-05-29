@@ -5,12 +5,14 @@ import { FavouriteContext } from "@/app/context/FavouriteContext";
 import { useFetchUserRepoData } from "@/app/hooks/useFetchUserRepoData";
 import { StorageKey } from "@/app/types/Storage";
 import { storeData } from "@/app/utils/storage";
+import { GitHubLogo } from "@/assets/images/GitHubLogo";
 import { Heart } from "@/assets/images/Heart";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import React, { useContext } from "react";
 import {
   ActivityIndicator,
   Image,
+  Linking,
   Text,
   TouchableOpacity,
   View,
@@ -49,23 +51,39 @@ export const UserDetails = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={addFavouriteUser} style={styles.heartIcon}>
+        <Heart isFavourite={isFavourite} />
+      </TouchableOpacity>
       <View style={styles.topInformation}>
-        <TouchableOpacity onPress={addFavouriteUser} style={styles.heartIcon}>
-          <Heart isFavourite={isFavourite} />
-        </TouchableOpacity>
-
         <Image source={{ uri: userData?.avatar_url }} style={styles.avatar} />
-        <Text style={styles.name}>{userData?.name}</Text>
+        <Text style={[styles.name, styles.whiteText]}>{userData?.name}</Text>
       </View>
 
       <View style={styles.bottomInformation}>
         {userData?.bio ? (
-          <Text style={styles.textAlignCenter}>Bio: {userData.bio}</Text>
+          <Text style={[styles.textAlignCenter, styles.whiteText]}>
+            Bio: {userData.bio}
+          </Text>
         ) : null}
-        <Text>Public Repos: {userData?.public_repos}</Text>
-        <Text>Number of followers: {userData?.followers}</Text>
-        {userData?.bio ? <Text>Location: {userData?.location}</Text> : null}
+        <Text style={styles.whiteText}>
+          Public Repos: {userData?.public_repos}
+        </Text>
+        <Text style={styles.whiteText}>
+          Number of followers: {userData?.followers}
+        </Text>
+        {userData?.location ? (
+          <Text style={styles.whiteText}>Location: {userData?.location}</Text>
+        ) : null}
       </View>
+
+      {userData?.html_url ? (
+        <TouchableOpacity
+          style={styles.gitHubButton}
+          onPress={() => Linking.openURL(userData?.html_url)}
+        >
+          <GitHubLogo />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };

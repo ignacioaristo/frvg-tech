@@ -4,9 +4,11 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    backgroundColor: "#1A202C",
+    borderWidth: 3,
+    justifyContent: "space-evenly",
   },
   topInformation: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
@@ -28,13 +30,23 @@ export const styles = StyleSheet.create({
     marginTop: 20,
   },
   bottomInformation: {
-    flex: 1,
     alignItems: "center",
+    gap: 12,
   },
   textAlignCenter: {
     textAlign: "center",
   },
   loading: {
     flex: 1,
+  },
+  whiteText: {
+    color: "#fff",
+  },
+  gitHubButton: {
+    backgroundColor: "#4A5568",
+    padding: 10,
+    borderRadius: 5,
+    width: "40%",
+    alignItems: "center",
   },
 });
