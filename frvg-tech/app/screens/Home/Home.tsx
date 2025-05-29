@@ -2,9 +2,13 @@ import { EmptyData } from "@/app/components/EmptySearch/EmptyData";
 import { SearchBar } from "@/app/components/SearchBar/SearchBar";
 import { FavouriteContext } from "@/app/context/FavouriteContext";
 import { useFetchUsers } from "@/app/hooks/useFetchUsers";
+import { useHandleFavourite } from "@/app/hooks/useHandleFavourite";
 import { MainNavigatorStackList } from "@/app/types/Navigations";
-import { ItemUser } from "@/app/types/SearchUser";
+import { ItemUser, SearchUser } from "@/app/types/SearchUser";
+import { User } from "@/app/types/User";
+import { debounce } from "@/app/utils/debounce";
 import { Heart } from "@/assets/images/Heart";
+import { API_GITHUB } from "@/config";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React, { useContext, useState } from "react";
 import {
@@ -15,7 +19,6 @@ import {
   Text,
   TouchableOpacity,
   useWindowDimensions,
-  View,
 } from "react-native";
 import { styles } from "./Home.styles";
 
@@ -25,18 +28,27 @@ export const Home = () => {
   const navigation = useNavigation<NavigationProp<MainNavigatorStackList>>();
   const { width } = useWindowDimensions();
 
+  const { addFavouriteUser, removeFavouriteUser } = useHandleFavourite();
+
   const { isLoading, users } = useFetchUsers();
   // const users = USER_MOCK;
   // const isLoading = false;
 
-  const handleOnPressUser = (item) => {
+  const handleOnPressUser = (item: ItemUser | User) => {
     navigation.navigate("UserDetails", {
       user: item,
     });
   };
 
-  const renderItem = ({ item }: { item: any }) => {
+  const renderItem = ({ item }: { item: ItemUser | User }) => {
     const isFavourite = favouriteList.favouriteUsers.includes(item.id);
+    const handleFavouriteUser = () => {
+      if (isFavourite) {
+        removeFavouriteUser(item.id);
+      } else {
+        addFavouriteUser(item.id);
+      }
+    };
     return (
       <TouchableOpacity
         style={[styles.userButton, { width: width / 2 - 20 }]}
@@ -44,18 +56,30 @@ export const Home = () => {
       >
         <Image source={{ uri: item.avatar_url }} style={styles.avatar} />
         <Text style={styles.name}>{item.login}</Text>
-        {isFavourite ? (
-          <View style={styles.favouriteIcon}>
-            <Heart width={15} height={15} isFavourite />
-          </View>
-        ) : null}
+        <TouchableOpacity
+          onPress={handleFavouriteUser}
+          style={styles.favouriteIcon}
+        >
+          <Heart width={25} height={25} isFavourite={isFavourite} />
+        </TouchableOpacity>
       </TouchableOpacity>
     );
   };
 
+  //TODO: Move this into the service folder
+  const handleSearch = async (text: string) => {
+    debounce(async () => {
+      const response = await fetch(
+        `${API_GITHUB}/search/users?q=${text.trim()}`
+      );
+      const user: SearchUser = await response.json();
+      setUserSearched(user.items);
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar setUserSearched={setUserSearched} />
+      <SearchBar handleSearch={handleSearch} />
       {isLoading ? (
         <ActivityIndicator />
       ) : (

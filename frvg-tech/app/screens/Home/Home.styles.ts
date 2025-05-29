@@ -31,7 +31,11 @@ export const styles = StyleSheet.create({
     height: 60,
     borderRadius: 100,
   },
-  name: { paddingTop: 10 },
+  name: {
+    paddingTop: 10,
+    color: "#fff",
+    fontWeight: "bold",
+  },
   favouriteIcon: {
     position: "absolute",
     top: 10,

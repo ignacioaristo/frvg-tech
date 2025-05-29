@@ -1,3 +1,5 @@
+// type ItemUser = User & {score: number}
+
 export type ItemUser = {
   login: string;
   id: number;

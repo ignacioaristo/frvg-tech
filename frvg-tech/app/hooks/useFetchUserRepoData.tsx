@@ -4,7 +4,7 @@ import { RepoUserData } from "../types/RepoUserData";
 
 export const useFetchUserRepoData = (username: string) => {
   const [users, setUsers] = useState<RepoUserData>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchUsersRepoData = async () => {

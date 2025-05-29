@@ -1,10 +1,8 @@
 import { MainNavigatorStackList } from "@/app/types/Navigations";
-import { useIsFavourite } from "@/app/utils/useIsFavourite";
 
 import { FavouriteContext } from "@/app/context/FavouriteContext";
 import { useFetchUserRepoData } from "@/app/hooks/useFetchUserRepoData";
-import { StorageKey } from "@/app/types/Storage";
-import { storeData } from "@/app/utils/storage";
+import { useHandleFavourite } from "@/app/hooks/useHandleFavourite";
 import { GitHubLogo } from "@/assets/images/GitHubLogo";
 import { Heart } from "@/assets/images/Heart";
 import { RouteProp, useRoute } from "@react-navigation/native";
@@ -26,64 +24,70 @@ export const UserDetails = () => {
 
   const { users: userData, isLoading } = useFetchUserRepoData(user.login);
 
-  const { isFavourite } = useIsFavourite(userData?.id || 0);
+  const { addFavouriteUser, removeFavouriteUser } = useHandleFavourite();
 
-  const addFavouriteUser = () => {
+  const handleFavouriteUser = () => {
     if (userData) {
       const userId = userData.id;
       if (!data.favouriteUsers.includes(userId)) {
-        data.setFavouriteUsers((prev) => {
-          storeData(StorageKey.favouriteUsers, [...prev, userId]); //TODO: Improve this logic
-          return [...prev, userId];
-        });
+        addFavouriteUser(userId);
       } else {
-        data.setFavouriteUsers((prev) => {
-          storeData(StorageKey.favouriteUsers, [
-            ...prev.filter((id) => id !== userId),
-          ]); //TODO: Improve this logic
-          return prev.filter((id) => id !== userId);
-        });
+        removeFavouriteUser(userId);
       }
     }
   };
 
-  if (isLoading) return <ActivityIndicator style={styles.loading} />;
-
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={addFavouriteUser} style={styles.heartIcon}>
-        <Heart isFavourite={isFavourite} />
-      </TouchableOpacity>
-      <View style={styles.topInformation}>
-        <Image source={{ uri: userData?.avatar_url }} style={styles.avatar} />
-        <Text style={[styles.name, styles.whiteText]}>{userData?.name}</Text>
-      </View>
+      {isLoading ? (
+        <ActivityIndicator style={styles.loading} />
+      ) : (
+        <>
+          <TouchableOpacity
+            onPress={handleFavouriteUser}
+            style={styles.heartIcon}
+          >
+            <Heart isFavourite={data.favouriteUsers.includes(user.id)} />
+          </TouchableOpacity>
+          <View style={styles.topInformation}>
+            <Image
+              source={{ uri: userData?.avatar_url }}
+              style={styles.avatar}
+            />
+            <Text style={[styles.name, styles.whiteText]}>
+              {userData?.name}
+            </Text>
+          </View>
 
-      <View style={styles.bottomInformation}>
-        {userData?.bio ? (
-          <Text style={[styles.textAlignCenter, styles.whiteText]}>
-            Bio: {userData.bio}
-          </Text>
-        ) : null}
-        <Text style={styles.whiteText}>
-          Public Repos: {userData?.public_repos}
-        </Text>
-        <Text style={styles.whiteText}>
-          Number of followers: {userData?.followers}
-        </Text>
-        {userData?.location ? (
-          <Text style={styles.whiteText}>Location: {userData?.location}</Text>
-        ) : null}
-      </View>
+          <View style={styles.bottomInformation}>
+            {userData?.bio ? (
+              <Text style={[styles.textAlignCenter, styles.whiteText]}>
+                Bio: {userData.bio}
+              </Text>
+            ) : null}
+            <Text style={styles.whiteText}>
+              Public Repos: {userData?.public_repos}
+            </Text>
+            <Text style={styles.whiteText}>
+              Number of followers: {userData?.followers}
+            </Text>
+            {userData?.location ? (
+              <Text style={styles.whiteText}>
+                Location: {userData?.location}
+              </Text>
+            ) : null}
+          </View>
 
-      {userData?.html_url ? (
-        <TouchableOpacity
-          style={styles.gitHubButton}
-          onPress={() => Linking.openURL(userData?.html_url)}
-        >
-          <GitHubLogo />
-        </TouchableOpacity>
-      ) : null}
+          {userData?.html_url ? (
+            <TouchableOpacity
+              style={styles.gitHubButton}
+              onPress={() => Linking.openURL(userData?.html_url)}
+            >
+              <GitHubLogo />
+            </TouchableOpacity>
+          ) : null}
+        </>
+      )}
     </View>
   );
 };
