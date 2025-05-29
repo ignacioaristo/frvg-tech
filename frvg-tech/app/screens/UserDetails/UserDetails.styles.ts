@@ -34,4 +34,7 @@ export const styles = StyleSheet.create({
   textAlignCenter: {
     textAlign: "center",
   },
+  loading: {
+    flex: 1,
+  },
 });

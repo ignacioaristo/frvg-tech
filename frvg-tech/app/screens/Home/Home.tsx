@@ -3,39 +3,31 @@ import { SearchBar } from "@/app/components/SearchBar/SearchBar";
 import { FavouriteContext } from "@/app/context/FavouriteContext";
 import { MainNavigatorStackList } from "@/app/types/Navigations";
 import { ItemUser } from "@/app/types/SearchUser";
-import { User } from "@/app/types/User";
 import { Heart } from "@/assets/images/Heart";
+import { USER_MOCK } from "@/mocks/users";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   SafeAreaView,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
+  View,
 } from "react-native";
 import { styles } from "./Home.styles";
 
 export const Home = () => {
-  const [users, setUsers] = useState<User[]>();
   const [userSearched, setUserSearched] = useState<ItemUser[] | null>(null);
   const favouriteList = useContext(FavouriteContext);
   const navigation = useNavigation<NavigationProp<MainNavigatorStackList>>();
+  const { width } = useWindowDimensions();
 
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch("https://api.github.com/users");
-      const data: User[] = await response.json();
-
-      setUsers(data);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  // const { isLoading, users } = useFetchUsers();
+  const users = USER_MOCK;
+  const isLoading = false;
 
   const handleOnPressUser = (item) => {
     navigation.navigate("UserDetails", {
@@ -43,16 +35,20 @@ export const Home = () => {
     });
   };
 
-  const renderItem = ({ item, index }: { item: any; index: number }) => {
+  const renderItem = ({ item }: { item: any }) => {
     const isFavourite = favouriteList.favouriteUsers.includes(item.id);
     return (
       <TouchableOpacity
-        style={[styles.userButton, index % 2 === 0 && styles.greayButton]}
+        style={[styles.userButton, { width: width / 2 - 20 }]}
         onPress={() => handleOnPressUser(item)}
       >
         <Image source={{ uri: item.avatar_url }} style={styles.avatar} />
         <Text style={styles.name}>{item.login}</Text>
-        {isFavourite ? <Heart width={15} height={15} isFavourite /> : null}
+        {isFavourite ? (
+          <View style={styles.favouriteIcon}>
+            <Heart width={15} height={15} isFavourite />
+          </View>
+        ) : null}
       </TouchableOpacity>
     );
   };
@@ -60,12 +56,17 @@ export const Home = () => {
   return (
     <SafeAreaView style={styles.container}>
       <SearchBar setUserSearched={setUserSearched} />
-      <FlatList
-        keyExtractor={(data) => String(data.id)}
-        renderItem={renderItem}
-        data={userSearched ? userSearched : users}
-        ListEmptyComponent={<EmptyData text="No users were found" />}
-      />
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          keyExtractor={(data) => String(data.id)}
+          renderItem={renderItem}
+          data={userSearched ? userSearched : users}
+          contentContainerStyle={styles.flatListContainer}
+          ListEmptyComponent={<EmptyData text="No users were found" />}
+        />
+      )}
     </SafeAreaView>
   );
 };

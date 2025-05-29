@@ -7,6 +7,6 @@ export const debounce = (callback: () => void): void => {
   }
 
   debounceTimer = setTimeout(() => {
-    callback();
+    return callback();
   }, 1000);
 };

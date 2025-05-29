@@ -1,10 +1,11 @@
-import { SearchUser } from "@/app/types/SearchUser";
+import { ItemUser, SearchUser } from "@/app/types/SearchUser";
 import { debounce } from "@/app/utils/debounce";
 import React from "react";
 import { TextInput, View } from "react-native";
+import { styles } from "./SearchBar.styles";
 
 type Props = {
-  setUserSearched: any;
+  setUserSearched: (users: ItemUser[]) => void;
 };
 
 export const SearchBar: React.FC<Props> = ({ setUserSearched }) => {
@@ -19,17 +20,14 @@ export const SearchBar: React.FC<Props> = ({ setUserSearched }) => {
   };
 
   return (
-    <View style={{ padding: 10 }}>
+    <View style={styles.container}>
       <TextInput
         onChangeText={handleSearch}
         placeholder="Search..."
-        style={{
-          height: 40,
-          borderColor: "gray",
-          borderWidth: 1,
-          borderRadius: 5,
-          paddingHorizontal: 10,
-        }}
+        placeholderTextColor={"#A0AEC0"}
+        autoCapitalize="none"
+        autoComplete="off"
+        style={styles.input}
       />
     </View>
   );

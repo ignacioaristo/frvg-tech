@@ -1,36 +1,28 @@
 import { MainNavigatorStackList } from "@/app/types/Navigations";
-import { RepoUserData } from "@/app/types/RepoUserData";
 import { useIsFavourite } from "@/app/utils/useIsFavourite";
 
 import { FavouriteContext } from "@/app/context/FavouriteContext";
+import { useFetchUserRepoData } from "@/app/hooks/useFetchUserRepoData";
 import { StorageKey } from "@/app/types/Storage";
 import { storeData } from "@/app/utils/storage";
 import { Heart } from "@/assets/images/Heart";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import React, { useContext, useEffect, useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import React, { useContext } from "react";
+import {
+  ActivityIndicator,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { styles } from "./UserDetails.styles";
 
 export const UserDetails = () => {
   const route = useRoute<RouteProp<MainNavigatorStackList, "UserDetails">>();
   const user = route.params.user;
-  const [userData, setUserData] = useState<RepoUserData>();
   const data = useContext(FavouriteContext);
 
-  const fetchUserRepoData = async (username: string) => {
-    try {
-      const response = await fetch(`https://api.github.com/users/${username}`);
-      const data: RepoUserData = await response.json();
-
-      setUserData(data);
-    } catch (error) {
-      console.error("Error fetching user repositories:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUserRepoData(user.login);
-  }, []);
+  const { users: userData, isLoading } = useFetchUserRepoData(user.login);
 
   const { isFavourite } = useIsFavourite(userData?.id || 0);
 
@@ -52,6 +44,8 @@ export const UserDetails = () => {
       }
     }
   };
+
+  if (isLoading) return <ActivityIndicator style={styles.loading} />;
 
   return (
     <View style={styles.container}>
