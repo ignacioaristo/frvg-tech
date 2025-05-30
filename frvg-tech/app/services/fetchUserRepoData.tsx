@@ -1,4 +1,4 @@
-import { API_GITHUB } from "@/config";
+import { API_GITHUB } from "@/app/config/config";
 import { RepoUserData } from "../types/RepoUserData";
 
 export const fetchUserRepoData = async (username: string) => {

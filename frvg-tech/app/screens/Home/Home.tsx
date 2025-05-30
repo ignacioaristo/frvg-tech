@@ -1,5 +1,6 @@
 import { EmptyData } from "@/app/components/EmptySearch/EmptyData";
 import { SearchBar } from "@/app/components/SearchBar/SearchBar";
+import * as testIDSelectors from "@/app/config/testIDSelectors";
 import { FavouriteContext } from "@/app/context/FavouriteContext";
 import { useFetchSearchUser } from "@/app/hooks/useFetchSearchUser";
 import { useFetchUsers } from "@/app/hooks/useFetchUsers";
@@ -77,7 +78,7 @@ export const Home = () => {
         }
       />
       {isLoading ? (
-        <ActivityIndicator />
+        <ActivityIndicator testID={testIDSelectors.Home.LOADING_INDICATOR} />
       ) : (
         <FlatList
           keyExtractor={(data) => String(data.id)}

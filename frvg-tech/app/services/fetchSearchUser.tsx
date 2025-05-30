@@ -1,4 +1,4 @@
-import { API_GITHUB } from "@/config";
+import { API_GITHUB } from "@/app/config/config";
 import { SearchUser } from "../types/SearchUser";
 
 export const fetchSearchUser = async (text: string) => {
