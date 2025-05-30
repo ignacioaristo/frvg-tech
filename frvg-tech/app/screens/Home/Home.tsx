@@ -50,6 +50,7 @@ export const Home = () => {
       }
     };
     return (
+      //TODO: Make button a Share Component
       <TouchableOpacity
         style={[styles.userButton, { width: width / 2 - 20 }]}
         onPress={() => handleOnPressUser(item)}
@@ -87,6 +88,8 @@ export const Home = () => {
           keyExtractor={(data) => String(data.id)}
           renderItem={renderItem}
           // data={users}
+          numColumns={2}
+          columnWrapperStyle={styles.columnWrapperStyle}
           data={userSearched ? userSearched : users}
           contentContainerStyle={styles.flatListContainer}
           ListEmptyComponent={<EmptyData text="No users were found" />}

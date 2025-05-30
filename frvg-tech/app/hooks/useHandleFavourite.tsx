@@ -3,7 +3,7 @@ import { FavouriteContext } from "../context/FavouriteContext";
 import { StorageKey } from "../types/Storage";
 import { storeData } from "../utils/storage";
 
-//TODO: Possible upgrade optimistic UI.
+//TODO: Possible upgrade: optimistic UI.
 export const useHandleFavourite = () => {
   const data = useContext(FavouriteContext);
 

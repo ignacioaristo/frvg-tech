@@ -43,10 +43,17 @@ export const styles = StyleSheet.create({
     color: "#fff",
   },
   gitHubButton: {
-    backgroundColor: "#4A5568",
     padding: 10,
     borderRadius: 5,
     width: "40%",
     alignItems: "center",
+    borderWidth: 2,
+    backgroundColor: "#2D3748",
+    borderColor: "#63B3ED",
+  },
+  backArrow: {
+    position: "absolute",
+    top: 30,
+    left: 30,
   },
 });

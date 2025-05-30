@@ -7,11 +7,13 @@ export const styles = StyleSheet.create({
     backgroundColor: "#1A202C",
   },
   flatListContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
     justifyContent: "space-around",
-    gap: 12,
+    alignItems: "center",
     flexGrow: 1,
+  },
+  columnWrapperStyle: {
+    gap: 12,
+    marginBottom: 12,
   },
   userButton: {
     flexDirection: "column",

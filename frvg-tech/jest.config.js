@@ -14,5 +14,5 @@ module.exports = {
     "\\.web\\.(spec|test)\\.(js|jsx|ts|tsx)",
   ],
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setupAfterEnv.ts"],
 }

@@ -3,9 +3,10 @@ import { MainNavigatorStackList } from "@/app/types/Navigations";
 import { FavouriteContext } from "@/app/context/FavouriteContext";
 import { useFetchUserRepoData } from "@/app/hooks/useFetchUserRepoData";
 import { useHandleFavourite } from "@/app/hooks/useHandleFavourite";
+import { BackArrow } from "@/assets/images/BackArrow";
 import { GitHubLogo } from "@/assets/images/GitHubLogo";
 import { Heart } from "@/assets/images/Heart";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useContext } from "react";
 import {
   ActivityIndicator,
@@ -19,6 +20,7 @@ import { styles } from "./UserDetails.styles";
 
 export const UserDetails = () => {
   const route = useRoute<RouteProp<MainNavigatorStackList, "UserDetails">>();
+  const navigation = useNavigation();
   const user = route.params.user;
   const data = useContext(FavouriteContext);
 
@@ -37,6 +39,10 @@ export const UserDetails = () => {
     }
   };
 
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.container}>
       {isLoading ? (
@@ -49,6 +55,10 @@ export const UserDetails = () => {
           >
             <Heart isFavourite={data.favouriteUsers.includes(user.id)} />
           </TouchableOpacity>
+          <TouchableOpacity onPress={handleGoBack} style={styles.backArrow}>
+            <BackArrow />
+          </TouchableOpacity>
+
           <View style={styles.topInformation}>
             <Image
               source={{ uri: userData?.avatar_url }}
