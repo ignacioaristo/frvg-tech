@@ -10,7 +10,7 @@ import { getData } from "./utils/storage";
 
 const Stack = createNativeStackNavigator<MainNavigatorStackList>();
 
-function RootStack() {
+export function RootStack() {
   const [favouriteUsers, setFavouriteUsers] = useState<number[]>([]);
 
   const getFavouritesFromStorage = async () => {

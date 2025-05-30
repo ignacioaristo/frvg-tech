@@ -32,8 +32,6 @@ export const Home = () => {
   const { fetchSearchUsers, users: userSearched } = useFetchSearchUser();
 
   const { isLoading, users } = useFetchUsers();
-  // const users = USER_MOCK;
-  // const isLoading = false;
 
   const handleOnPressUser = (item: ItemUser | User) => {
     navigation.navigate("UserDetails", {
@@ -83,7 +81,6 @@ export const Home = () => {
         <FlatList
           keyExtractor={(data) => String(data.id)}
           renderItem={renderItem}
-          // data={users}
           numColumns={2}
           columnWrapperStyle={styles.columnWrapperStyle}
           data={userSearched ? userSearched : users}

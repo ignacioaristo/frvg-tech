@@ -1,5 +1,6 @@
 import { MainNavigatorStackList } from "@/app/types/Navigations";
 
+import * as testIDSelectors from "@/app/config/testIDSelectors";
 import { FavouriteContext } from "@/app/context/FavouriteContext";
 import { useFetchUserRepoData } from "@/app/hooks/useFetchUserRepoData";
 import { useHandleFavourite } from "@/app/hooks/useHandleFavourite";
@@ -8,6 +9,7 @@ import { GitHubLogo } from "@/assets/images/GitHubLogo";
 import { Heart } from "@/assets/images/Heart";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useContext } from "react";
+
 import {
   ActivityIndicator,
   Image,
@@ -92,6 +94,7 @@ export const UserDetails = () => {
             <TouchableOpacity
               style={styles.gitHubButton}
               onPress={() => Linking.openURL(userData?.html_url)}
+              testID={testIDSelectors.UserDetails.GITHUB_BUTTON}
             >
               <GitHubLogo />
             </TouchableOpacity>
