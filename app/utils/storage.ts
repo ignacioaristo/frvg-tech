@@ -7,5 +7,5 @@ export const storeData = async (key: StorageKey, value: StorageValues) => {
 
 export const getData = async (key: StorageKey) => {
   const data = await AsyncStorage.getItem(key);
-  return data != null ? JSON.parse(data) : null;
+  return data != null ? JSON.parse(data) : [];
 };

@@ -23,7 +23,7 @@ import { styles } from "./UserDetails.styles";
 export const UserDetails = () => {
   const route = useRoute<RouteProp<MainNavigatorStackList, "UserDetails">>();
   const navigation = useNavigation();
-  const user = route.params.user;
+  const user = route.params?.user;
   const data = useContext(FavouriteContext);
 
   const { users: userData, isLoading } = useFetchUserRepoData(user.login);
@@ -33,7 +33,7 @@ export const UserDetails = () => {
   const handleFavouriteUser = () => {
     if (userData) {
       const userId = userData.id;
-      if (!data.favouriteUsers.includes(userId)) {
+      if (!data?.favouriteUsers?.includes(userId)) {
         addFavouriteUser(userId);
       } else {
         removeFavouriteUser(userId);
@@ -55,7 +55,7 @@ export const UserDetails = () => {
             onPress={handleFavouriteUser}
             style={styles.heartIcon}
           >
-            <Heart isFavourite={data.favouriteUsers.includes(user.id)} />
+            <Heart isFavourite={data.favouriteUsers?.includes(user.id)} />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleGoBack} style={styles.backArrow}>
             <BackArrow />

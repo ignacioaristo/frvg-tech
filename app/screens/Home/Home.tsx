@@ -40,7 +40,7 @@ export const Home = () => {
   };
 
   const renderItem = ({ item }: { item: ItemUser | User }) => {
-    const isFavourite = favouriteList.favouriteUsers.includes(item.id);
+    const isFavourite = favouriteList.favouriteUsers?.includes(item.id);
     const handleFavouriteUser = () => {
       if (isFavourite) {
         removeFavouriteUser(item.id);
