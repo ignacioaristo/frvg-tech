@@ -1,16 +1,16 @@
 import { EmptyData } from "@/app/components/EmptySearch/EmptyData";
 import { SearchBar } from "@/app/components/SearchBar/SearchBar";
 import { FavouriteContext } from "@/app/context/FavouriteContext";
+import { useFetchSearchUser } from "@/app/hooks/useFetchSearchUser";
 import { useFetchUsers } from "@/app/hooks/useFetchUsers";
 import { useHandleFavourite } from "@/app/hooks/useHandleFavourite";
 import { MainNavigatorStackList } from "@/app/types/Navigations";
-import { ItemUser, SearchUser } from "@/app/types/SearchUser";
+import { ItemUser } from "@/app/types/SearchUser";
 import { User } from "@/app/types/User";
 import { debounce } from "@/app/utils/debounce";
 import { Heart } from "@/assets/images/Heart";
-import { API_GITHUB } from "@/config";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -23,12 +23,12 @@ import {
 import { styles } from "./Home.styles";
 
 export const Home = () => {
-  const [userSearched, setUserSearched] = useState<ItemUser[] | null>(null);
   const favouriteList = useContext(FavouriteContext);
   const navigation = useNavigation<NavigationProp<MainNavigatorStackList>>();
   const { width } = useWindowDimensions();
 
   const { addFavouriteUser, removeFavouriteUser } = useHandleFavourite();
+  const { fetchSearchUsers, users: userSearched } = useFetchSearchUser();
 
   const { isLoading, users } = useFetchUsers();
   // const users = USER_MOCK;
@@ -67,20 +67,15 @@ export const Home = () => {
     );
   };
 
-  //TODO: Move this into the service folder
-  const handleSearch = async (text: string) => {
-    debounce(async () => {
-      const response = await fetch(
-        `${API_GITHUB}/search/users?q=${text.trim()}`
-      );
-      const user: SearchUser = await response.json();
-      setUserSearched(user.items);
-    });
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar handleSearch={handleSearch} />
+      <SearchBar
+        handleSearch={(text) =>
+          debounce(async () => {
+            fetchSearchUsers(text);
+          })
+        }
+      />
       {isLoading ? (
         <ActivityIndicator />
       ) : (
