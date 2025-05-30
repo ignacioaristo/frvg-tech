@@ -29,7 +29,11 @@ export const Home = () => {
   const { width } = useWindowDimensions();
 
   const { addFavouriteUser, removeFavouriteUser } = useHandleFavourite();
-  const { fetchSearchUsers, users: userSearched } = useFetchSearchUser();
+  const {
+    fetchSearchUsers,
+    users: userSearched,
+    isLoading: isLoadingSearch,
+  } = useFetchSearchUser();
 
   const { isLoading, users } = useFetchUsers();
 
@@ -75,8 +79,14 @@ export const Home = () => {
           })
         }
       />
-      {isLoading ? (
-        <ActivityIndicator testID={testIDSelectors.Home.LOADING_INDICATOR} />
+      {isLoading || isLoadingSearch ? (
+        <ActivityIndicator
+          style={{
+            alignSelf: "center",
+            flex: 1,
+          }}
+          testID={testIDSelectors.Home.LOADING_INDICATOR}
+        />
       ) : (
         <FlatList
           keyExtractor={(data) => String(data.id)}

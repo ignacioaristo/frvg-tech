@@ -27,4 +27,4 @@ If this is your first time cloning the repository, follow these steps:
    npx expo start
    ```
 
-3. From the Expo panel, you can open the app in an Android/iOS emulator, on your physical device with the Expo Go app.
+3. Press 'i' for open the iOS Simulator or from the Expo panel, you can open the app in an Android/iOS emulator, on your physical device with the Expo Go app.

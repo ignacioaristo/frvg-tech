@@ -4,7 +4,7 @@ import { ItemUser } from "../types/SearchUser";
 
 export const useFetchSearchUser = () => {
   const [users, setUsers] = useState<ItemUser[]>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const fetchSearchUsers = async (username: string) => {
